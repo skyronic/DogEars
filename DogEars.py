@@ -47,24 +47,6 @@ class NewBookmarkCommand(sublime_plugin.TextCommand):
 
 		print("Saving bookmark {0} at key {1}".format(bookmarkName, key))
 
-class DogEarListener(sublime_plugin.EventListener):
-	def on_close(view):
-		# Get the filename, and the base path
-		baseName = os.path.basename(view.file_name())
-
-		viewKeys = []
-
-		# Iterate through all the bookmarks and see if any bookmarks match the keys
-		for key, value in BOOKMARKS:
-			if value['baseName'] == baseName:
-				viewKey.append(key)
-
-		for key in viewKeys:
-			region = view.get_regions("dogears_" + key)
-
-			if len(region) == 0:
-				# This means that the bookmark must've been deleted or something
-				pass
 
 class BrowseBookmarksCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
