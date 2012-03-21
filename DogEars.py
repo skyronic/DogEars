@@ -43,7 +43,7 @@ class NewBookmarkCommand(sublime_plugin.TextCommand):
 		BOOKMARKS[key] = bookmark
 
 		# Create a region to behave like a bookmark
-		self.view.add_region('dogears_' + key, sublime.Region(self.point, self.point), "", "bookmark", sublime.HIDDEN)
+		self.view.add_regions('dogears_' + key, [s for s in self.view.sel()], "", "bookmark")
 
 		print("Saving bookmark {0} at key {1}".format(bookmarkName, key))
 
@@ -62,6 +62,41 @@ class DogEarListener(sublime_plugin.EventListener):
 		for key in viewKeys:
 			region = view.get_regions("dogears_" + key)
 
-			if len(region) === 0:
+			if len(region) == 0:
 				# This means that the bookmark must've been deleted or something
 				pass
+
+class BrowseBookmarksCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		bookmarkOpts = []
+		self.panelKeys = []
+
+		for key, val in BOOKMARKS.iteritems():
+			bookmarkOpts.append(val['name'])
+			self.panelKeys.append(key)
+
+		window = self.view.window()
+
+		window.show_quick_panel(bookmarkOpts, self.on_bookmark_selected)
+
+	def on_bookmark_selected(self, idx):
+
+		if(idx == -1):
+			print("No bookmark selected. Returning ")
+			return
+
+
+		# Get the key for the bookmark
+		key = self.panelKeys[idx]
+
+		# Retrieve the region for the bookmark
+		bmRegion = self.view.get_regions("dogears_" + key)
+
+		if len(bmRegion) == 0:
+			return
+
+		self.view.run_command("select_all_bookmarks", {'name':"dogears_" + key})
+
+
+
+
