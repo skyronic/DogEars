@@ -53,9 +53,12 @@ class BrowseBookmarksCommand(sublime_plugin.TextCommand):
 		bookmarkOpts = []
 		self.panelKeys = []
 
+		baseName = os.path.basename(self.view.file_name())
+
 		for key, val in BOOKMARKS.iteritems():
-			bookmarkOpts.append(val['name'])
-			self.panelKeys.append(key)
+			if baseName == val['baseName']:
+				bookmarkOpts.append(val['name'])
+				self.panelKeys.append(key)
 
 		window = self.view.window()
 
@@ -77,7 +80,6 @@ class BrowseBookmarksCommand(sublime_plugin.TextCommand):
 			return
 
 		self.view.run_command("select_all_bookmarks", {'name':"dogears_" + key})
-
 
 
 
