@@ -1,5 +1,10 @@
 import sublime, sublime_plugin
 import os
+import string, random
+
+def id_generator(size=5, chars=string.ascii_uppercase + string.digits):
+	return ''.join(random.choice(chars) for x in range(size))
+
 
 BOOKMARKS = []
 
@@ -16,9 +21,9 @@ class NewBookmarkCommand(sublime_plugin.TextCommand):
 			return
 
 		point = sel[0].begin()
+		self.point = point
 
 		self.fileName = self.view.file_name()
-		self.row, self.col = self.view.rowcol(point)
 
 		window = self.view.window()
 
@@ -29,10 +34,16 @@ class NewBookmarkCommand(sublime_plugin.TextCommand):
 	def on_bookmark_name_entered(self, bookmarkName):
 		print("Saving bookmark {0} as {1}-{2}:{3}".format(bookmarkName, self.fileName, self.row, self.col))
 
+		# Create a unique ID for the bookmark
+		key = id_generator()
+
 		bookmark = {}
 		bookmark['fileName'] = self.fileName
-		bookmark['row'] = self.row
-		bookmark['col'] = self.col
 		bookmark['name'] = bookmarkName
+		bookmark['key'] = key
+
 		BOOKMARKS.append(bookmark)
+
+		# Create a region to behave like a bookmark
+		self.view.add_region('bookmark_' + key, sublime.Region(self.point, self.point), "", "bookmark", sublime.HIDDEN)
 
