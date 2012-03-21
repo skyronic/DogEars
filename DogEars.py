@@ -85,7 +85,6 @@ class BrowseBookmarksCommand(sublime_plugin.TextCommand):
 			print("No bookmark selected. Returning ")
 			return
 
-
 		# Get the key for the bookmark
 		key = self.panelKeys[idx]
 
