@@ -6,8 +6,8 @@ DogEars allows you to create Bookmarks inside your code, and give them names. It
 
 ### What works:
 
-* Create a bookmark [Ctrl + Shift + B]  (you will need to enter a name)
-* Access a bookmark [Ctrl + Shift + M]  (note that this only works inside the file where the bookmarks exist)
+* Create a bookmark (Ctrl + Shift + B)  (you will need to enter a name)
+* Access a bookmark (Ctrl + Shift + M  (note that this only works inside the file where the bookmarks exist)
 
 ### What doesn't work(yet):
 
